@@ -1,0 +1,123 @@
+#+TITLE: Notes from Mastering API Architecture
+
+* Preface
+
+After reading this book you will understand:
+
+- The fundamentals of REST APIs and how to best build, version, and test APIs
+- The architectural patterns involved in building an API platform
+- The differences in managing API traffic at ingress and within service-to-service communication, and how to apply patterns and technologies such as API gateways and service meshes
+- Threat modeling and key security considerations for APIs, such as authentication, authorization, and encryption
+- How to evolve existing systems toward APIs and different target deployments, such as the cloud
+
+And you will be able to:
+
+- Design, build, and test API-based systems
+- Help to implement and drive an organization’s API program from an architectural perspective
+- Deploy, release, and configure key components of an API platform
+- Deploy gateways and service meshes based on case studies
+- Identify vulnerabilities in API architecture and implement measured security mitigations
+- Contribute to emerging API trends and the associated communities
+
+* Introduction
+
+The authors consider API to mean the following:
+- an api represents an abstraction of the underlying implementation
+- it is represented by a specification that introduces types
+- it has defined semantics or behavior to effectively model the
+  exchange of information
+- it enables extension to customers or third parties for business
+  integration
+
+** Using Architecture Decision Records
+
+There are 4 key sections in an ADR: status, context, decision, and
+consequences
+
+* Part I: Designing, Building, and Testing APIs
+
+This section provides the foundational building blocks for API-driven
+architectures.
+
+In Chapter 1 you will learn about REST and Remote Procedure Call
+(RPC)–based APIs. We will explore specifications and schemas,
+recommended standards, strategies for versioning, and how to choose
+the right API for your system.
+
+In Chapter 2 you will learn about testing APIs and how different test
+styles are best applied to API-driven architectures.
+
+* Chapter 1. Design, Build, and Specify APIs
+
+** Introduction to REST
+
+REpresentational State Transfer (REST) is a set of architectural
+constraitns, most commonly applied using HTTP as the underlying
+transport protocol.
+
+To be considered restful, our API must ensure that:
+- A producer-to-consumer interaction is modeled where the producer
+  models resources the consumer can interact with.
+- Requests from producer to consumer are stateless, meaning that the
+  producer doesn't cache details of the previous request.
+- Requests are cachable, meaning the producer can provide hints to the
+  consumer where this is appropriate. In HTTP, this is often provided
+  in information contained in the header.
+- A uniform interface is conveyed to the consumer.
+- It is a layered system, abstracting away the complexity of systems
+  sitting behind the REST interface.
+
+** The Richardson Maturity Model
+
+*Level 0 - HTTP/RPC*
+
+Establishes that the API is built using HTTP and has the notion of a
+single URI. Taking our preceding example of /attendees and not
+applying a verb to specify intent, we would open up an endpoint for
+exchange. Essentially this represents an RPC implementation over the
+REST protocol.
+
+*Level 1 - Resources*
+
+Establishes the use of resources and starts to bring in the idea of
+modeling resources in the context of the URI. In our example, if we
+added GET /attendees/1 returning a specific attendee, it would start
+to look like a level 1 API. Martin Fowler draws an analogy to the
+classic object-oriented world of introducing identity.
+
+*Level 2 - Verbs (Methods)*
+
+Starts to introduce the correct modeling of multiple resource URIs
+accessed by different request methods (also known as HTTP verbs) based
+on the effect of the resources on the server. An API at level 2 can
+make guarantees around GET methods not impacting server state and
+presenting multiple operations on the same resource URI. In our
+example adding DELETE /attendees/1, PUT /attendees/1 would start to
+add the notion of a level 2–compliant API.
+
+*Level 3 - Hypermedia Controls*
+
+This is the epitome of REST design and involves navigable APIs by the
+use of HATEOAS (Hypertext As The Engine Of Application State). In our
+example, when we call GET /attendees/1, the response would contain the
+actions that are possible on the object returned from the server. This
+would include the option to be able to update the attendee or delete
+the attendee and what the client is required to invoke in order to do
+so. In practical terms level 3 is rarely used in modern RESTful HTTP
+services, and although the navigation is a benefit in flexible UI
+style systems, it doesn’t suit interservice API calls. Using HATEOAS
+would be a chatty experience and is often short-circuited by having a
+complete specification of possible interactions up front while
+programming against the producer.
+
+---
+
+When designing API exchanges, the different levels of Richardson
+maturity are important to consider. Moving towards level 2 will enable
+you to project an understandable resource model to the consumer, with
+approporiate actions against the model.
+
+** Introduction to RPC APIs
+
+A remote procedure call (RPC) involves calling a method in one process
+but having it execute code in another process.
