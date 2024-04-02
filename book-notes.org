@@ -121,3 +121,80 @@ approporiate actions against the model.
 
 A remote procedure call (RPC) involves calling a method in one process
 but having it execute code in another process.
+
+gRPC is a modern open source high performance RPC. The gRPC attendee
+service starts and exposes a gRPC server on a specified port, allowing
+methods to be invoked remotely.
+
+A key difference between RPC and REST is state. REST is by definition
+stateless, whereas RPC state depends on the implementation. RPC
+integrations in certain situations can also build up state as part of
+the exchange, which has the convenience of high performance at the
+potential cost of reliability and routing complexities.
+
+** A Brief Mention of GraphQL
+
+- RPC offers access to a series of individual functions provided by a
+  producer, but does not usually extend a model or abstraction to the
+  consumer.
+- REST extends a resource model for a single API provided by the producer
+  - the consumer needs to query sequentially to build up state on the
+    client side. This is wasteful if the consumer is only interested
+    in a subset of the fields on the response.
+
+GraphQL introduces a technology later over existing services,
+datastores, and APIs that provides a query language to query across
+multiple sources. It uses the GraphQL schema language to specify the
+types in individual APIs and how they combine.
+
+GraphQL excels when a consumer requires uniform API access over a wide
+range of interconnected services.
+
+** REST API Standards and Structure
+
+Some considerations:
+- pagination using nextLink
+- filtering collections
+- error handling
+
+** Summary
+
+In this chapter we have covered how to design, build, and specify APIs and the different circumstances under which you may choose REST or gRPC. It is important to remember that it is not REST versus gRPC, but rather given the situations, which is the most appropriate choice for modeling the exchange. The key takeaways are:
+
+- The barrier to building REST- and RPC-based APIs is low in most technologies. Carefully considering the design and structure is an important architectural decision.
+
+- When choosing between REST and RPC models, consider the Richardson
+  Maturity Model and the degree of coupling between the producer and
+  consumer.
+
+- REST is a fairly loose standard. When building APIs, conforming to
+  an agreed API standard ensures your APIs are consistent and have the
+  expected behavior for your consumers. API standards can also help to
+  short-circuit potential design decisions that could lead to an
+  incompatible API.
+
+- OpenAPI Specifications are a useful way of sharing API structure and
+  automating many coding-related activities. You should actively
+  select OpenAPI features and choose what tooling or generation
+  features will be applied to projects.
+
+- Versioning is an important topic that adds complexity for the
+  producer but is necessary to ease API usage for the consumer. Not
+  planning for versioning in APIs exposed to consumers is
+  dangerous. Versioning should be an active decision in the product
+  feature set and a mechanism to convey versioning to consumers should
+  be part of the discussion.
+
+- gRPC performs incredibly well in high-bandwidth exchanges and is an
+  ideal option for east–west exchanges. Tooling for gRPC is powerful
+  and provides another option when modeling exchanges.
+
+- Modeling multiple specifications starts to become quite tricky,
+  especially when generating from one type of specification to
+  another. Versioning complicates matters further but is an important
+  factor to avoid breaking changes. Teams should think carefully
+  before combining RPC representations with RESTful API
+  representations, as there are fundamental differences in terms of
+  usage and control over the consumer code.
+
+The challenge for an API architecture is to meet the requirements from a consumer business perspective, to create a great developer experience around APIs, and to avoid unexpected compatibility issues. In Chapter 2 you will explore testing, which is essential in ensuring services meet these objectives.
