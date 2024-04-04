@@ -197,4 +197,117 @@ In this chapter we have covered how to design, build, and specify APIs and the d
   representations, as there are fundamental differences in terms of
   usage and control over the consumer code.
 
-The challenge for an API architecture is to meet the requirements from a consumer business perspective, to create a great developer experience around APIs, and to avoid unexpected compatibility issues. In Chapter 2 you will explore testing, which is essential in ensuring services meet these objectives.
+The challenge for an API architecture is to meet the requirements from
+a consumer business perspective, to create a great developer
+experience around APIs, and to avoid unexpected compatibility
+issues.
+
+
+
+BUILD: make an example api that hits level 2
+BUILD: try out gRPC between 2 services
+BUILD: try out graphql
+
+* Chapter 2. Testing APIs
+
+** Test Quadrant
+
+
+Q1
+
+Unit and component tests for technology. These should verify that
+the service that has been created works, and this verification should
+be performed using automated testing.
+
+Q2
+
+Tests with the business. These ensure what is being built is
+serving a purpose. This is verified with automated testing and can
+also include manual testing.
+
+Q3
+
+Testing for the business. This is about ensuring that functional
+requirements are met and also includes exploratory testing. When
+Figure 2-2 was originally created, this type of testing was
+manual; now it is possible to perform automated testing in this
+area as well.
+
+Q4
+
+Ensuring that what exists works from a technical standpoint. From
+Q1 you know that what has been built works; however, when the
+product is being used, is it performing as expected? Examples of
+performing correctly from a technical standpoint could include
+security enforcement, SLA integrity, and autoscaling.
+
+** Test Pyramid
+
+Unit Tests > integration tests > end to end tests
+
+** Contract Testing
+
+Contract testing has 2 components: a consumer and a producer. A
+consumer requests data from an API, and a producer responds to the API
+requests.
+
+
+BUILD: Build an api test with pact in python
+
+
+ But the real value added of this integration strategy is the fact
+ that it fosters conversations and collaboration between
+ teams. Whenever you need to introduce a breaking change as a
+ provider, you can immediately verify which are the consumers that
+ will be affected by the change, and initiate a process that involves
+ both teams with the final goal of keeping your platform up, running
+ and healthy.
+
+
+https://docs.pact.io/
+
+A key benefit of contract tests is that once the producer agrees to
+implement a contract, this decouples the dependency of building the
+consumer and producer.
+
+It is worth looking at tooling that writes contracts for you based on
+an OpenAPI specification.
+
+** API Component Testing
+
+Component testing can be used to validate that multiple units work
+together and should be used to validate behaviour.
+
+
+ for APIs you would be looking to validate cases such as:
+
+ Is the correct status code returned when a request is made?
+
+ Does the response contain the correct data?
+
+ Is an incoming payload rejected if a null or empty parameter is
+ passed in?
+
+ When I send a request where the accepted content type is XML, will
+ the data return the expected format?
+
+ If a request is made by a user who does not have the correct
+ entitlements, what will the response be?
+
+ What will happen if an empty dataset is returned? Is this a 404 or
+ is it an empty array?
+
+ When creating a resource, does the location header point to the
+ new asset created?
+
+** Using Stub Servers: Why and How
+
+If you are using contract tests, the generated stub servers can be
+used to verify that the consumer can communicate with the producer.
+
+A generated stub server from a contract is not always available and
+other options are required, as in the case of testing with an external
+API, such as the Microsoft Graph API, or within your organization when
+contracts are not used. The simplest one is to hand roll a stub server
+that mimics the requests and responses of the service you interact
+with.
