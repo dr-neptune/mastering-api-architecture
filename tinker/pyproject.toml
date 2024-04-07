@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "tinker"
+version = "0.1.0"
+description = ""
+authors = ["dr-neptune <mrosedatasci@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pandas = "^2.2.1"
+yfinance = "^0.2.37"
+sqlmodel = "^0.0.16"
+fastapi = "^0.110.1"
+ruff = "^0.3.5"
+ruff-lsp = "^0.0.53"
+uvicorn = "^0.29.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
