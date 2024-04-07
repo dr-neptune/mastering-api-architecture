@@ -204,7 +204,7 @@ issues.
 
 
 
-BUILD: make an example api that hits level 2
+BUILD: make an example api that hits level 2 [done]
 BUILD: try out gRPC between 2 services
 BUILD: try out graphql
 
