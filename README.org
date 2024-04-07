@@ -1,0 +1,7 @@
+* Notes from Mastering API Architecture
+
+These are minimal notes and some toy projects from and inspired by the
+book Mastering API Architecture by James Gough, Daniel Bryant, &
+Matthew Auburn.
+
+[[./cover.jpg]]
