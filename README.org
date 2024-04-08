@@ -5,3 +5,77 @@ book Mastering API Architecture by James Gough, Daniel Bryant, &
 Matthew Auburn.
 
 [[./cover.jpg]]
+
+
+* Projects
+
+There are some simple projects in the `tinker` folder:
+
+** Market Data API Examples
+
+This repository contains examples of different API architectures and
+communication protocols for a market data application. The examples
+demonstrate how to expose and consume market data using various
+approaches.
+
+*** Richardson Maturity Level 2 REST API
+
+- File: app.py
+
+This example showcases a REST API that adheres to the Richardson
+Maturity Model Level 2. It provides endpoints for performing CRUD
+operations on market data resources. The API is implemented using
+Python and utilizes the FastAPI framework.
+
+*** gRPC API
+
+- Files: market_data.proto, client.py, server.py
+
+This example demonstrates how to use gRPC (Remote Procedure Call) for
+efficient communication between a client and a server. It defines a
+gRPC service using Protocol Buffers (market_data.proto) and provides
+implementations for both the client (client.py) and the server
+(server.py). The gRPC API allows retrieving market data by ID and
+listing market data entries.
+
+*** GraphQL API
+
+- File: gql.py
+
+This example illustrates how to create a GraphQL API for querying
+market data. It utilizes the Strawberry library to define the GraphQL
+schema and resolvers. The API allows retrieving market data by ID
+using GraphQL queries. The example integrates with a SQLite database
+to fetch the market data.
+
+*** Database
+
+The examples use a SQLite database (market_data.db) to store the
+market data. The database schema includes the following columns:
+
+- id (int64): The unique identifier for each market data entry.
+- Date (datetime64[ns]): The date of the market data entry.
+- Open (float64): The opening price.
+- High (float64): The highest price.
+- Low (float64): The lowest price.
+- Close (float64): The closing price.
+- Adj_Close (float64): The adjusted closing price.
+- Volume (float64): The trading volume.
+- Symbol (object): The ticker symbol of the financial instrument.
+
+*** Requirements
+
+To run the examples, make sure you have the following dependencies installed:
+
+- Python (version X.X.X)
+- FastAPI (for the REST API example)
+- gRPC (for the gRPC API example)
+- Strawberry (for the GraphQL API example)
+- SQLAlchemy (for database integration)
+
+Please refer to the individual example files for specific instructions
+on how to run and interact with each API.
+
+*** License
+
+This repository is licensed under the [[https://opensource.org/licenses/MIT][MIT License]].

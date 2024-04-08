@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package market_data;
+
+service MarketDataService {
+  rpc GetMarketData (GetMarketDataRequest) returns (MarketData) {}
+  rpc ListMarketData (ListMarketDataRequest) returns (stream MarketData) {}
+}
+
+message GetMarketDataRequest {
+  int32 id = 1;
+}
+
+message ListMarketDataRequest {
+  int32 limit = 1;
+}
+
+message MarketData {
+  int32 id = 1;
+  string date = 2;
+  float open = 3;
+  float high = 4;
+  float low = 5;
+  float close = 6;
+  float adj_close = 7;
+  float volume = 8;
+  string symbol = 9;
+}

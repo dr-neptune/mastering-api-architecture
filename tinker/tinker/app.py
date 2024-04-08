@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException, Depends
 from sqlmodel import create_engine, Session, select
 from typing import List
-from models import MarketData, MarketDataSchema
+from models import MarketData
 
 
 app = FastAPI()
@@ -14,21 +14,21 @@ def get_db():
         yield session
 
 # Level 2 API routes
-@app.post("/v2/market_data/", response_model=MarketData)
+@app.post("/market_data/", response_model=MarketData)
 def create_market_data_v2(market_data: MarketData, db: Session = Depends(get_db)):
     db.add(market_data)
     db.commit()
     db.refresh(market_data)
     return market_data
 
-@app.get("/v2/market_data/{id}", response_model=MarketData)
+@app.get("/market_data/{id}", response_model=MarketData)
 def read_market_data_v2(id: int, db: Session = Depends(get_db)):
     market_data = db.get(MarketData, id)
     if not market_data:
         raise HTTPException(status_code=404, detail="Market data not found")
     return market_data
 
-@app.put("/v2/market_data/{id}", response_model=MarketData)
+@app.put("/market_data/{id}", response_model=MarketData)
 def update_market_data_v2(id: int, market_data: MarketData, db: Session = Depends(get_db)):
     db_market_data = db.get(MarketData, id)
     if not db_market_data:
@@ -41,7 +41,7 @@ def update_market_data_v2(id: int, market_data: MarketData, db: Session = Depend
     db.refresh(db_market_data)
     return db_market_data
 
-@app.delete("/v2/market_data/{id}")
+@app.delete("/market_data/{id}")
 def delete_market_data_v2(id: int, db: Session = Depends(get_db)):
     market_data = db.get(MarketData, id)
     if not market_data:
@@ -50,7 +50,7 @@ def delete_market_data_v2(id: int, db: Session = Depends(get_db)):
     db.commit()
     return {"message": "Market data deleted successfully"}
 
-@app.get("/v2/market_data/", response_model=List[MarketData])
+@app.get("/market_data/", response_model=List[MarketData])
 def read_market_data_list_v2(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     market_data_list = db.exec(select(MarketData).offset(skip).limit(limit)).all()
     return market_data_list

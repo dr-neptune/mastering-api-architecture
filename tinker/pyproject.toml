@@ -14,6 +14,11 @@ fastapi = "^0.110.1"
 ruff = "^0.3.5"
 ruff-lsp = "^0.0.53"
 uvicorn = "^0.29.0"
+grpcio = "^1.62.1"
+grpcio-tools = "^1.62.1"
+graphene = "^3.3"
+sqlalchemy = "^2.0.29"
+strawberry-graphql = "^0.224.1"
 
 
 [build-system]
