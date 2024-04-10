@@ -205,8 +205,8 @@ issues.
 
 
 BUILD: make an example api that hits level 2 [done]
-BUILD: try out gRPC between 2 services
-BUILD: try out graphql
+BUILD: try out gRPC between 2 services [done]
+BUILD: try out graphql [done]
 
 * Chapter 2. Testing APIs
 
@@ -252,7 +252,7 @@ consumer requests data from an API, and a producer responds to the API
 requests.
 
 
-BUILD: Build an api test with pact in python
+BUILD: Build an api test with a contract in python
 
 
  But the real value added of this integration strategy is the fact
@@ -272,6 +272,64 @@ consumer and producer.
 
 It is worth looking at tooling that writes contracts for you based on
 an OpenAPI specification.
+
+
+** ADR Guideline: Contract Testing
+
+*Decision:*
+
+When building an API should you use contract testing and, if so,
+should you use consumer-driven contracts or producer contracts?
+
+*Discussion Points:*
+
+Determine whether you are ready to include contract testing as part of
+your API testing.
+
+- Do you want to add an extra layer of testing to your API that
+  developers will be required to learn about?
+
+If contracts have not been used before, then it requires time to
+decide how you will use them.
+
+- Should contracts be centralized or in a project?
+
+- Do additional tools and training need to be provided to help people
+  with contracts?
+
+If deciding to use contracts, then which methodology should be
+used—CDC or producer contracts?
+
+- Do you know who will use this API?
+
+- Will this API be used just within your organization?
+
+- Does the API have consumers that are willing to engage with you to
+  help drive your functionality?
+
+*Recommendations:*
+
+We recommend using contract testing when building an API. Even if
+there is a developer learning curve and you are deciding how you are
+going to set up your contracts for the first time, we believe it is
+worth the effort. Defined interactions that are tested save so much
+time when integrating services together.
+
+If you are exposing your API to a large external audience, it is
+important to use producer contracts. Again, having defined
+interactions that help ensure that your API does not break backward
+compatibility is crucial.
+
+If you’re building an internal API, the ideal is to work toward CDC,
+even if you have to start with producer contracts and evolve over to
+CDC.
+
+If contract testing is not feasible, then for a producer you need
+alternatives to ensure that your API is conforming your agreed
+interactions and provide a way that consumers can test. This means
+that you have to be very careful with your tests that the responses
+and requests match with what is expected, which can be tricky and
+time-consuming.
 
 ** API Component Testing
 
@@ -311,3 +369,103 @@ API, such as the Microsoft Graph API, or within your organization when
 contracts are not used. The simplest one is to hand roll a stub server
 that mimics the requests and responses of the service you interact
 with.
+
+*Decision*
+Should integration testing be added to API testing?
+
+*Discussion Points*
+
+If your API is integrating with any other service, what level of
+integration test should you use?
+
+- Do you feel confident that you can just mock responses and do not
+  need to perform integration tests?
+
+- For creating a stub server to test against, are you able to
+  accurately craft the request and responses or should they be
+  recorded?
+
+- Will you be able to keep stub servers up-to-date and recognize if an
+  interaction is incorrect?
+
+If your stubs are incorrect or become out of date, this means it is
+possible to have tests that pass against your stub server, but when
+you deploy to production, your service fails to interact with the
+other API as it has changed.
+
+*Recommendations*
+
+We do recommend using the generated stub servers from contract
+tests. However, if this is not available, then having integration
+testing using recordings of interactions is the next best
+option. Having integration tests that can be run locally gives
+confidence that an integration will work, especially when refactoring
+an integration; it will help to ensure that any changes have not
+broken anything.
+
+** Test Containers
+
+Basically, run a container with all the dependencies locally and test
+there.
+
+testcontainers is a library (with python integration) that
+orchestrates containers with a testing library:
+
+https://testcontainers.com/
+
+The authors suggest using test containers to test integrations.
+
+** End to End Testing
+
+For end to end testing, it is ideal to have real versions of our
+actual services running and interacting together.
+
+** ADR Guideline: End to End testing
+
+*Decision*
+
+As part of your testing setup, should you use automated end-to-end
+tests?
+
+*Discussion Points:*
+
+Determine how complex your setup is to enable end-to-end testing. Do
+you have a good idea of end-to-end tests that you require and will
+provide value? Are there any specific requirements or more advanced
+end-to-end tests that you should add?
+
+*Recommendations:*
+
+We recommend that you do perform at a minimum end-to-end testing on
+core user journeys. This is going to give feedback as early as
+possible in your development cycle that a user could be impacted with
+the changes that have been made. Ideally you can run these end-to-end
+tests locally; however, if not, then it should be part of your build
+pipeline.
+
+End-to-end testing is valuable but must be balanced against the time
+investment you need to get it running. If it is not possible to do
+automated end-to-end testing, then you need to have a run book of
+manual tests that you can use. This run book should be used against a
+testing environment before a production release. This type of manual
+testing will considerably slow down your production releases and
+ability to deliver value to customers.
+
+** Key Takeaways
+
+- make unit testing a core of our API
+- Contract testing can help us develop a consistent API and test with
+  other APIs
+- Perform service tests on our components and isolate the integrations
+  to validate incoming and outgoing traffic
+- Use e2e tests to replicate core user journeys to help validate that
+  our apis integrate correctly
+- use ADR guidelines as a way to work out if we should add different
+  tests to our api
+
+* Part II. API Traffic Management
+
+This part deals with traffic entering the system (ingress) and traffic
+originating within the system (service to service traffic.)
+
+* Chapter 3. API Gateways: Ingress Traffic Management
