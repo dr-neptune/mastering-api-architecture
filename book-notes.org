@@ -469,3 +469,91 @@ This part deals with traffic entering the system (ingress) and traffic
 originating within the system (service to service traffic.)
 
 * Chapter 3. API Gateways: Ingress Traffic Management
+
+** Is an API Gateway the only solution?
+
+No, but it is the most commonly used solution, particularly in an
+enterprise context. As the number of consumers and providers
+increases, it is often the most scalable, maintaianable, and secure
+option.
+
+|--------------------+---------------+---------------+-------------|
+| Feature            | Reverse proxy | Load balancer | API gateway |
+|--------------------+---------------+---------------+-------------|
+| Single Backend     | *             | *             | *           |
+| TLS/SSL            | *             | *             | *           |
+| Multiple Backends  |               | *             | *           |
+| Service Discovery  |               | *             | *           |
+| API Composition    |               |               | *           |
+| Authorization      |               |               | *           |
+| Retry Logic        |               |               | *           |
+| Rate Limiting      |               |               | *           |
+| Logging and Tracing|               |               | *           |
+| Circuit Breaking   |               |               | *           |
+|--------------------+---------------+---------------+-------------|
+
+** ADR: Proxy, Load Balancer, or API Gateway
+
+*Decision*
+
+Should you use a proxy, load balancer, or API gateways for routing
+ingress traffic?
+
+*Discussion Points*
+
+Do you want simple routing, for example, from a single endpoint to a single backend service?
+
+Do you have cross-functional requirements that will require more advanced features, such as authentication, authorization, or rate limiting?
+
+Do you require API management functionality, such as API keys/tokens or monetization/chargeback?
+
+Do you already have a solution in place, or is there an organization-wide mandate that all traffic must be routed through certain components at the edge of your network?
+
+*Recommendations*
+
+Always use the simplest solution for your requirements, with an eye to the immediate future and known requirements.
+
+If you have advanced cross-functional requirements, an API gateway is typically the best choice.
+
+If your organization is an enterprise, an API gateway that supports API Management (APIM) features is recommended.
+
+Always perform due diligence within your organization for existing
+mandates, solutions, and components.
+
+** What is an API Gateway?
+
+An API gateway is a management tool that sits at the edge of a system
+between a consumer and a collection of backend services and acts as a
+single point of entry for a defined group of APIs.
+
+An API gateway is implemented with 2 high-level fundamental
+components: a control plane and a data plane.The control plane is
+where operators interact with the gateway and define routes, policies,
+and required telemetry. The data plane is where all of the work
+specified in the control plane occurs, the network packets are routed,
+the policies enforced, and telemetry emitted.
+
+At a network level an API gateway typically acts as a reverse proxy to
+accept all of the api requests from a consumer, calls and aggregates
+the various application-level backend services required to fulfill
+them, and returns the appropriate result.
+
+It also provides requirements such as user authentication, request
+rate limiting, timeouts/retries, metrics, logs, and trace data.
+
+
+#+DOWNLOADED: screenshot @ 2024-04-10 08:19:30
+[[file:Chapter_3._API_Gateways:_Ingress_Traffic_Management/2024-04-10_08-19-30_screenshot.png]]
+
+** Why use an API gateway?
+
+This section of the chapter will provide you with an overview of the key problems that an API gateway can address, such as:
+
+- Reducing coupling by using an adapter/facade between frontends and
+  backends
+- Simplifying consumption by aggregating/translating backend services
+- Protecting APIs from overuse and abuse with threat detection and
+  mitigation
+- Understanding how APIs are being consumed (observability)
+- Managing APIs as products with API lifecycle management
+- Monetizing APIs by using account management, billing, and pay
