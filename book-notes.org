@@ -557,3 +557,149 @@ This section of the chapter will provide you with an overview of the key problem
 - Understanding how APIs are being consumed (observability)
 - Managing APIs as products with API lifecycle management
 - Monetizing APIs by using account management, billing, and pay
+
+** API Gateway as a single point of failure
+
+In a standard web-based system, the first obvious points of failure
+are (in order):
+
+- DNS
+- global and regional layer load balancers
+- security edge components (like firewall or WAF)
+- API gateway
+
+** ADR Guideline: Selecting an API Gateway
+
+*Decision*
+
+How should we approach selecting an API gateway for our organization?
+
+*Discussion Points*
+
+Have we identified and prioritized all of our requirements associated
+with selecting an API gateway?
+
+Have we identified current technology solutions that have been
+deployed in this space within the organization?
+
+Do we know all of our team and organizational constraints?
+
+Have we explored our future roadmap in relation to this decision?
+
+Have we honestly calculated the “build versus buy” costs?
+
+Have we explored the current technology landscape and are we aware of
+all of the available solutions?
+
+Have we consulted and informed all involved stakeholders in our
+analysis and decision making?
+
+*Recommendations*
+
+Focus particularly on your requirement to reduce API/system coupling,
+simplify consumption, protect APIs from overuse and abuse, understand
+how APIs are being consumed, manage APIs as products, and monetize
+APIs.
+
+Key questions to ask include: is there an existing API gateway in use?
+Has a collection of technologies been assembled to provide similar
+functionality (e.g., hardware load balancer combined with a monolithic
+app that performs authentication and application-level routing)? How
+many components currently make up your edge stack (e.g., WAF, LB, edge
+cache, etc.)?
+
+Focus on technology skill levels within your team, availability of
+people to work on an API gateway project, and available resources and
+budget, etc.
+
+It is important to identify all planning changes, new features, and
+current goals that could impact traffic management and the other
+functionality that an API gateway provides.
+
+Calculate the total cost of ownership (TCO) of all of the current API
+gateway-like implementations and potential future solutions.
+
+Consult with well-known analysts, trend reports, and product reviews
+in order to understand all of the current solutions available.
+
+Selecting and deploying an API gateway will impact many teams and
+individuals. Be sure to consult with the developers, QA, the
+architecture review board, the platform team, InfoSec, etc.
+
+** Summary
+
+An API gateway is a tool that sits at the edge of the system, handles
+routing to various backend services, and provides middleware concerns
+like security, logging, adapters for various implementations, etc.
+
+They help with managing north-south ingress traffic.
+
+* Chapter 4. Service Mesh: Service-to-Service Traffic Management
+
+Now we learn about managing traffic for internal APIs, i.e.,
+service-to-service communication.
+
+Service mesh implementations provide functionality for routing,
+observing, and securing traffic for service-to-service communication.
+
+Both a library (like an SDK or driver) and service mesh-based
+solutions can satisfy s2s needs.
+
+** ADR: Service Mesh
+
+*Decision*
+Should you use a service mesh or a library for routing service traffic?
+
+*Discussion Points*
+
+Do you use a single programming language within your organization?
+
+Do you only require simple service-to-service routing for REST or
+RPC-like communication?
+
+Do you have cross-functional requirements that will require more
+advanced features, such as authentication, authorization, or rate
+limiting?
+
+Do you already have a solution in place, or is there an
+organization-wide mandate that all traffic must be routed through
+certain components within your network?
+
+*Recommendations*
+
+If your organization mandates the use of a single programming language
+or framework, you can typically take advantage of the
+language-specific libraries or mechanisms for service-to-service
+communication.
+
+Always use the simplest solution for your requirements, with an eye to
+the immediate future and known requirements.
+
+If you have advanced cross-functional requirements, particularly
+across services that use different programming languages or technology
+stacks, a service mesh may be the best choice.
+
+Always perform due diligence within your organization for existing
+mandates, solutions, and components.
+
+** What is a Service Mesh?
+
+It is a pattern for managing all service to service communication
+within a distributed software system. The originator of the
+communication is typically a somewhat known internal service, rather
+than a user's device or a system running external to our applications.
+
+It is implemented with 2 high-level fundamental components: a control
+plane and a data plane, which are deployed separately. The control
+plane is where operators interact with the service mesh and define
+routes, policies, and required telemetry. The data plane is the
+location where all of the work specified in the control plane occurs
+and where the network packets are routed, the policies enforced, and
+telemetry emitted.
+
+** What functionality does a service mesh provide?
+
+At a network level, a service mesh proxy acts as a full proxy,
+accepting all inbound traffic from other services and also initiating
+all outbound requests to other services, including all API calls and
+other requests.
