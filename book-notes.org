@@ -703,3 +703,76 @@ At a network level, a service mesh proxy acts as a full proxy,
 accepting all inbound traffic from other services and also initiating
 all outbound requests to other services, including all API calls and
 other requests.
+
+** Why use a service mesh?
+
+• Enable fine-grained control of service routing, reliability, and traffic management
+• Improve observability of interservice calls
+• Enforce security, including transport encryption, authentication,
+• and authorization
+• Support cross-functional communication requirements across a variety
+• of languages
+• Separate ingress and service-to-service traffic management
+
+** Sidecarless: Operating System Kernel (eBPF) implementations
+
+An alternative service mesh implementation is based on pushing the
+required networking abstractions back into the operating system
+itself. eBPF allows custom programs to run sandboxed within the
+kernel. eBPF programs are run in response to OS-level events,
+including things like entry to or exit from any function in the kernel
+or user space, or "trace points" and "probe points", and, importantly
+for service mesh, the arrival of network packets.
+
+The big 3 implementations of service meshes:
+- library based (and proxyless, e.g. grpc)
+- sidecars, proxy based
+- OS/kernel based
+
+** Summary
+
+- Fundamentally, “service mesh” is a pattern for managing all
+  service-to-service communication within a distributed software
+  system.
+
+- At a network level, a service mesh proxy acts as a full proxy,
+  accepting all inbound traffic from other services and also
+  initiating all outbound requests to other services.
+
+- A service mesh is deployed within an internal network or
+  cluster. Large systems or networks are typically managed by
+  deploying several instances of a service mesh, often with each
+  single mesh spanning a network segment or business domain
+
+- A service mesh may expose endpoints within a network demilitarized
+  zone (DMZ), or to external systems, or additional networks or
+  clusters, but this is frequently implemented by using an “ingress,”
+  “terminating,” or “transit” gateway.
+
+- There are many API-related cross-cutting concerns that you might
+  have for each or all of your internal services, including: product
+  lifecycle management (incrementally releasing new versions of a
+  service), reliability, multilanguage communication support,
+  observability, security, maintainability, and extensibility. A
+  service mesh can help with all of these.
+
+- A service mesh can be implemented using language-specific libraries,
+  sidecar proxies, proxyless communication frameworks (gRPC), or
+  kernel-based technologies like eBPF.
+
+- The most vulnerable component of a service mesh is typically the
+  control plane. This must be secured, monitored, and run as a highly
+  available service.
+
+- Service mesh usage antipatterns include: service mesh as ESB,
+  service mesh as gateway, and using too many networking layers.
+
+- Choosing to implement a service mesh, and selecting the technology
+  to do so, are Type 1 decisions. Research, requirements analysis, and
+  appropriate design must be conducted.
+
+- If you have decided to adopt the service mesh pattern we believe
+  that it is typically best to adopt and standardize on an open source
+  implementation or commercial solution rather than build your own
+
+* Chapter 5: Deploying and Releasing APIs
