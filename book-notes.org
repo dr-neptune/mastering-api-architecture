@@ -912,3 +912,184 @@ In the example system, here are examples of metrics to capture:
   for consistency across the plant.
 
 * Operational Security: Threat Modeling for APIs
+
+1. *Identify your objectives* Create a list of the business and security
+   objectives. Keep them simple (e.g., avoid unauthorized access).
+
+2. *Gather the right information* Generate a high-level design of the
+   system and ensure you have the right information. To be able to
+   understand how your systems work and work together, this will
+   include having the right people involved in the conversation.
+
+3. *Decompose the system* Break down your high-level design so that you
+   can start to model the threats. This may require multiple models
+   and diagrams.
+
+4. *Identify threats* Systematically look for threats to your systems.
+
+5. *Evaluate the risk of the threats* Prioritize threats to focus on the
+   most likely ones, then identify mitigations to these likely
+   threats.
+
+6. *Validate* Ask yourself and your team if the changes in place have
+   been successful. Should you perform another review?
+
+** STRIDE Methodology
+
+*** STRIDE Methodology
+**** Spoofing
+   - Impersonation of something or someone else to gain unauthorized access.
+**** Tampering
+   - Unauthorized modification of data.
+**** Repudiation
+   - Actions that cannot be traced back to the perpetrator.
+**** Information Disclosure
+   - Sensitive data is exposed to unauthorized parties.
+**** Denial of Service (DoS)
+   - Making a resource unavailable to its intended users.
+**** Elevation of Privilege
+   - Attacker gains higher-level permissions than originally assigned.
+
+*** Spoofing
+
+Ensure that a person is not able to masquerade as another person or
+program. To do this, we must authenticate any requests that are made
+and ensure that they are legitimate.
+
+*** Tampering
+
+Users or clients should not be able to modify the system, app, or data
+in an unintended manner. There are 2 primary ways that tampering
+occurs: through payload injection and mass assignment
+
+**** Payload Injection
+
+The attacker attempts to inject a malicious payload into the request
+made to an API or app. We can aim to prevent injection attacks early
+in the request handling chain by using the API gateway to validate
+that the request made conforms to a defined contract or schema. This
+can be helped with strict validation on the API input data.
+
+**** Mass Assignment
+
+Modifiable properties that are bound to database entities are
+vulnerable to being inappropriately changed. Mass assignment is
+typical where client input data is bound to internal objects without
+thought of the repercussions, which is often a consequence when
+exposing a database API as a web-based API.
+
+**** Repudiation
+
+A repudiation attack happens when an application or system does not
+adopt controls to properly track and log user's actions, which permits
+manipulation or forging the identification of new actions. Ensure that
+there is sufficient logging and monitoring.
+
+**** Information Disclosure
+
+Do not expose information that should be used internally or kept
+secret.
+
+***** Excessive Data Exposure
+
+Do not expose any data that is sensitive or not needed.
+
+***** Improper Assets Management
+
+This typically occurs as our systems evolve, and the org loses track
+of which APIs and which versions are exposed, or which APIs were
+designed for internal consumption only.
+
+**** Denial of Service
+
+Rate limiting and load shedding
+
+Rate limiting limits the number of requests that can be made to our
+API over a period of time. Load shedding means rejecting requests
+based on the overall state of the system.
+
+**** Elevation of Privilege
+
+This occurs when a user or app finds a way to perform a task that is
+outside the scope of what should be allowed given the current security
+context.
+
+**** Extras
+
+***** Security Misconfiguration
+Things like always having TLS (transport layer security) and ip
+allowlisting.
+
+***** TLS termination
+TLS ensures that the traffic we receive has not been intercepted and modified.
+
+***** CORS (Cross-Origin Request Sharing)
+CORS is an http-header-based mechanism that allows a server to
+indicate any origins (domain, scheme, or port) other than it's own
+from which a browser should permit loading resources.
+
+***** Security Directive Hardening
+
+A request to an API endpoint can contain an arbitrary payload. This
+ensures that all genuine requests conform to an expected contract.
+
+** Evaluate Threat Risks
+
+To evaluate threats, we can employ a qualitative risk calculation
+known as DREAD. Like STRIDE, DREAD was developed at M$.
+
+*** DREAD Methodology
+**** Damage
+   - Potential damage that could be caused if the threat were to be successfully exploited.
+**** Reproducibility
+   - How easy it is to reproduce the attack.
+**** Exploitability
+   - Ease of launching an attack using this vulnerability.
+**** Affected Users
+   - How many users would be impacted if the attack were successful.
+**** Discoverability
+   - How easy it is for an attacker to discover the vulnerability.
+
+*** Alternatives to DREAD
+**** MITRE ATT&CK Framework
+   - A comprehensive knowledge base of adversary tactics and techniques based on real-world observations.
+**** PASTA (Process for Attack Simulation and Threat Analysis)
+   - A seven-step, risk-centric methodology integrating security risk management with software development.
+**** Trike
+   - Focuses on defining acceptable levels of risk from the perspective of stakeholders.
+**** VAST (Visual, Agile, and Simple Threat modeling)
+   - Designed to be scalable and usable in agile development processes, integrating security into DevOps.
+
+** Summary
+*** Financial penalties and reputational damage
+  - Strong consequences for not securing APIs.
+*** Beginning Threat Modeling for API Systems
+  - Start with creating a data flow diagram (DFD).
+  - Use automated tooling for rapid analysis and threat identification.
+*** Conducting Threat Modeling Without Being a Security Expert
+  - Important skill: "thinking like an attacker."
+*** Threat Modeling Process
+  - Identify your objectives.
+  - Gather the right information.
+  - Decompose the system.
+  - Identify threats.
+  - Evaluate the risk of those threats.
+  - Validate the results and actions.
+*** Resources for Understanding Threats
+  - OWASP API Security Top 10.
+*** STRIDE Methodology Focus
+  - Addressing the threats of:
+    + Spoofing
+    + Tampering
+    + Repudiation
+    + Information disclosure
+    + Denial of service
+    + Elevation of privilege.
+*** DREAD Methodology Application
+  - Calculate a qualitative risk metric to prioritize threats.
+*** API Gateway in Distributed Systems
+  - Provides high-level risk mitigation.
+  - Consider individual service implementations and interservice communication in distributed systems.
+
+
+* Chapter 7: API Authentication and Authorization
