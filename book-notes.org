@@ -1409,3 +1409,10 @@ Some categories of fitness functions:
 They don't think it be like it is, but it do
 
 * Chapter 10: Wrap-up
+
+1. create frontend and backend
+2. add api gateway
+3. add service mesh
+4. create internal and external version of service and use feature
+   flags to determine routing
+5. zero trust architecture
