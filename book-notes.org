@@ -1154,3 +1154,258 @@ transfers assertions.
   user.
 
 * Chapter 8. Redesigning Applications to API-Driven Architectures
+
+** Creating Useful Abstractions: Increasing Cohesion
+
+Cohesion refers to the degree to which the elements inside a system
+belong together. When we create an api, we should think about how the
+abstractions belong together. We should also think about what our
+interfaces are for each system. We should choose the right interface
+for a given system, e.g. a car has a steering wheel, pedals, and
+dashboard, whereas a space shuttle has many more controls.
+
+
+** Clarifying Domain Boundaries: Promoting Loose Coupling
+
+A loosely coupled system has 2 properties:
+- components are weakly associated (have breakable relationships) with
+  each other, meaning changes in one component does not affect the
+  functionality or performance of another component.
+- Each of the system's components have little or no knowledge of the
+  definitions of other components.
+
+** Using Fitness Functions
+
+Defining fitness functions is a mechanism that provides a constant
+interrogation of the system architecture and code artifacts that make
+up the system. We can think of a fitness function as a sort of
+unit/integration test for architecture, assessing the 'ilities' of the
+architecture in a quantifiable metric. It is often included in the
+build pipeline to help provide a constanct assurance of the goals for
+the system.
+
+Some categories of fitness functions:
+- code quality
+- resiliency
+- observability
+- performance
+- compliance
+- security
+- operability
+
+** Correctness Fitness Functions
+*** Description
+    Correctness fitness functions ensure that the system functions as
+    expected across various levels of testing, from individual units
+    to integrated modules.
+*** Tools
+    - unittest
+    - pytest
+*** Example Code
+
+#+BEGIN_SRC python
+    import pytest
+
+    def add(a, b):
+        return a + b
+
+    def test_add():
+        assert add(2, 3) == 5
+#+END_SRC
+
+** Performance Fitness Functions
+*** Description
+    Performance fitness functions measure how well the system performs
+    in terms of response times, throughput, and resource utilization
+    under various load conditions.
+*** Tools
+    - locust
+*** Example Code
+    #+BEGIN_SRC python
+    from locust import HttpUser, task, between
+
+    class WebsiteUser(HttpUser):
+        wait_time = between(1, 5)
+
+        @task
+        def load_test(self):
+            self.client.get("/api/data")
+    #+END_SRC
+
+** Security Fitness Functions
+*** Description
+    Security fitness functions identify vulnerabilities and enforce
+    security standards through static and dynamic analysis.
+*** Tools
+    - Bandit (static analysis)
+*** Example Code
+    #+BEGIN_SRC bash
+    pip install bandit
+    bandit -r ./my_project
+    #+END_SRC
+
+** Scalability Fitness Functions
+*** Description
+    Scalability fitness functions assess the system’s ability to
+    handle increased load without compromising performance, ensuring
+    it can scale up or down based on demand.
+*** Tools
+    - locust (also applicable here for simulating high load)
+*** Example Code
+    #+BEGIN_SRC python
+    from locust import HttpUser, task, between
+
+    class HeavyLoadUser(HttpUser):
+        wait_time = between(1, 2)
+
+        @task
+        def heavy_task(self):
+            self.client.get("/api/heavy")
+    #+END_SRC
+
+** Resilience Fitness Functions
+*** Description
+    Resilience fitness functions evaluate the system's ability to
+    continue operating despite failures or errors, which is crucial
+    for maintaining service availability.
+*** Tools
+    - Chaos Monkey (not directly usable in Python but applicable in a microservice architecture)
+*** Example Code
+    No direct example for Python, typically implemented via service configurations.
+
+** Usability Fitness Functions
+*** Description
+    Usability fitness functions focus on how easily users can interact
+    with the system, emphasizing aspects such as user interface design
+    and accessibility.
+*** Tools
+    - axe-selenium-python
+*** Example Code
+    #+BEGIN_SRC python
+    from selenium import webdriver
+    from axe_selenium_python import Axe
+
+    driver = webdriver.Firefox()
+    driver.get("http://www.example.com")
+    axe = Axe(driver)
+    axe.inject()
+    results = axe.run()
+    axe.write_results(results, 'axe-results.json')
+    driver.close()
+    #+END_SRC
+
+** Maintainability Fitness Functions
+*** Description
+    Maintainability fitness functions ensure that the software is easy
+    to understand, modify, and extend, which is vital for long-term
+    maintenance and updates.
+*** Tools
+    - flake8
+    - pylint
+*** Example Code
+    #+BEGIN_SRC bash
+    pip install pylint
+    pylint my_module.py
+    #+END_SRC
+
+** Compliance Fitness Functions
+*** Description
+    Compliance fitness functions check that the software adheres to
+    relevant legal and regulatory standards, ensuring that it meets
+    necessary compliance requirements.
+*** Tools
+    Custom scripts or tools specific to regulations
+*** Example Code
+    No specific code; typically involves custom scripts for API checks
+    and compliance verifications.
+
+** Bridging the Researcher Gap
+*** Step 1: Establish Coding Standards
+    - **Objective**: Create a comprehensive guide of coding practices
+      and standards.
+    - **Actions**:
+      + Develop a document detailing coding standards, including
+        naming conventions, documentation requirements, and error
+        handling.
+      + Ensure the standards are accessible and promoted across all
+        teams.
+
+*** Step 2: Implement Code Review Process
+    - **Objective**: Enhance code quality through peer reviews.
+    - **Actions**:
+      + Set up a mandatory code review process involving both
+        researchers and engineers.
+      + Use tools like GitHub or GitLab to facilitate review
+        processes.
+
+*** Step 3: Use Version Control Systems
+    - **Objective**: Standardize the use of version control among
+      researchers.
+    - **Actions**:
+      + Train researchers on using Git or similar tools.
+      + Encourage regular commits and branches to track changes and
+        facilitate collaborative work.
+
+*** Step 4: Educate and Train Researchers
+    - **Objective**: Improve researchers’ understanding of software
+      engineering principles.
+    - **Actions**:
+      + Organize workshops and training sessions on clean code,
+        software architecture, and testing.
+      + Provide online resources and learning paths for continuous
+        learning.
+
+*** Step 5: Develop a Transition Framework
+    - **Objective**: Standardize the process of transitioning code to
+      production.
+    - **Actions**:
+      + Create templates and checklists that researchers must complete
+        before handing off code.
+      + Define clear steps for refactoring POC code to production
+        standards.
+
+*** Step 6: Promote Collaborative Development
+    - **Objective**: Foster a culture of collaboration between
+      researchers and engineers.
+    - **Actions**:
+      + Encourage joint projects and mixed team meetings from the
+        start of new initiatives.
+      + Implement shared goals and rewards to promote team unity.
+
+*** Step 7: Implement Prototyping and Pair Programming
+    - **Objective**: Enhance knowledge sharing and real-time learning.
+    - **Actions**:
+      + Schedule regular pair programming sessions between researchers
+        and engineers.
+      + Encourage prototyping as a means to explore solutions before
+        full-scale development.
+
+*** Step 8: Encourage Modular Development
+    - **Objective**: Make research code easier to integrate and test.
+    - **Actions**:
+      + Train researchers in designing modular code.
+      + Promote the development of self-contained code components that
+        can be individually tested and integrated.
+
+*** Step 9: Leverage Automation and Tooling
+    - **Objective**: Automate code quality checks to maintain standards.
+    - **Actions**:
+      + Integrate static code analysis and formatting tools into the
+        development environment.
+      + Set up continuous integration pipelines to automatically run
+        tests and quality checks.
+
+*** Step 10: Conduct Regular Sync Meetings
+    - **Objective**: Keep communication open and continuous.
+    - **Actions**:
+      + Schedule regular sync meetings between research and
+        engineering teams to discuss progress and challenges.
+      + Use these meetings to align on project goals, timelines, and
+        expectations.
+
+
+* Chapter 9: Using API Infrastructure to Evolve Toward Cloud Platforms
+
+They don't think it be like it is, but it do
+
+* Chapter 10: Wrap-up
